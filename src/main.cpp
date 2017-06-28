@@ -18,6 +18,7 @@ double deg2rad(double x) { return x * pi() / 180; }
 double rad2deg(double x) { return x * 180 / pi(); }
 
 const double Lf = 2.67;
+const double latency_sec = 0.1;
 
 // Checks if the SocketIO event has JSON data.
 // If there is data the JSON object in string format will be returned,
@@ -93,7 +94,9 @@ int main() {
           double py = j[1]["y"];
           double psi = j[1]["psi"];
           double v = j[1]["speed"];
+          double steering_angle = j[1]["steering_angle"];
 
+          // Transofrming waypoints to the car'corrdinates.
           for (int i = 0; i < ptsx.size(); ++i) {
             double diff_x = ptsx[i] - px;
             double diff_y = ptsy[i] - py;
@@ -101,16 +104,22 @@ int main() {
             ptsy[i] = diff_x * sin(-psi) + diff_y * cos(-psi);
           }
 
+          // We need to transform our std::vectors to Eigen::VectorXd
           Eigen::Map<Eigen::VectorXd> xs(ptsx.data(), ptsx.size());
           Eigen::Map<Eigen::VectorXd> ys(ptsy.data(), ptsy.size());
 
+          // We fit all transformed waypoints to a polynom of oder 3.
           auto coeffs = polyfit(xs, ys, 3);
 
-          double cte = polyeval(coeffs, 0);
-          double epsi = -atan(coeffs[1]);
+          // Computing initial state 100 ms ahead.
+          double x = v * latency_sec;
+          psi = -v * steering_angle * latency_sec / Lf;
+
+          double cte = polyeval(coeffs, x);
+          double epsi = psi - atan(coeffs[1] + 2*coeffs[2] * x + 3 * coeffs[3] * pow(x, 2));
 
           Eigen::VectorXd state(6);
-          state << 0, 0, 0, v, cte, epsi;
+          state << x, 0, psi, v, cte, epsi;
 
           auto vars = mpc.Solve(state, coeffs);
 
@@ -120,9 +129,11 @@ int main() {
           msgJson["steering_angle"] = -vars[0]/deg2rad(25);
           msgJson["throttle"] = vars[1];
 
-          //Display the MPC predicted trajectory 
+          //Display the MPC predicted trajectory
           vector<double> mpc_x_vals;
           vector<double> mpc_y_vals;
+          mpc_x_vals.reserve(vars.size() - 2);
+          mpc_y_vals.reserve(vars.size() - 2);
 
           for (int i = 2; i < vars.size(); i += 2) {
             mpc_x_vals.push_back(vars[i]);
@@ -135,10 +146,11 @@ int main() {
           //Display the waypoints/reference line
           vector<double> next_x_vals;
           vector<double> next_y_vals;
+          next_x_vals.reserve(25);
+          next_y_vals.reserve(25);
 
           // We use the polynomial we found earlier
           // to draw the way points
-
           for (int i = 1; i < 26; ++i) {
             next_x_vals.push_back(i*5);
             next_y_vals.push_back(polyeval(coeffs, i*5));
@@ -146,7 +158,6 @@ int main() {
 
           msgJson["next_x"] = next_x_vals;
           msgJson["next_y"] = next_y_vals;
-
 
           auto msg = "42[\"steer\"," + msgJson.dump() + "]";
           std::cout << msg << std::endl;
