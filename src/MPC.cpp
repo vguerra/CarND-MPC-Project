@@ -7,7 +7,7 @@ using CppAD::AD;
 
 size_t N = 10;
 double dt = 0.1;
-const double ref_v = 40.0
+const double ref_v = 40.0;
 
 // start index for each variable in the variables vector
 size_t x_start = 0;
