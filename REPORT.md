@@ -52,7 +52,7 @@ We have as well the actuators, that represent the control inputs:
 
 If we say that at time `t` we have an initial state of the vehicle and the control inputs, we would like to know the state after a short period of time has passed ( we call this differential `dt`). The update equations helps us to define the next state of the vehicle at time `t + 1`.
 
-- For the `x<sup>t + 1</sup>` position of the car: `x = x0 + v0 * cos(psi0) * dt`.
+- For the `x<sub>t + 1</sub>` position of the car: `x = x0 + v0 * cos(psi0) * dt`.
 - For the `y` position of the car: `y = y0 + v0 * sin(psi0) * dt`.
 - For the `psi` steering angle: `psi = psi0 + v0 * delta0 * dt / Lf`. Where Lf represents the distance between front of the vehicle and it's center of gravity.
 
