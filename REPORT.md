@@ -70,3 +70,5 @@ After that we proceed to compute the [optimized steering angle and throttle](htt
 ### Output Video
 
 This is the resulting video of the vehicle driving one lap.
+
+[![Project Video](https://img.youtube.com/vi/FEwMjXi-S7E/0.jpg)](https://youtu.be/FEwMjXi-S7E)
