@@ -54,7 +54,9 @@ If we say that at time `t` we have an initial state of the vehicle and the contr
 
 - For the `x` position of the car: `x = x0 + v0 * cos(psi0) * dt`.
 - For the `y` position of the car: `y = y0 + v0 * sin(psi0) * dt`.
-- For the `psi` steering angle: `psi = psi0 + v0 * delta0 * dt / Lf`. Where Lf represents the distance between front of the vehicle and it's center of gravity.
+- For the `psi` steering angle: `psi = psi0 + v0 * delta0 * dt / Lf`. Where `Lf` represents the distance between front of the vehicle and it's center of gravity.
+- For the `CTE` cross track error: `CTE = CTE0 + v0 * sin(ECTE0) * dt`. Where `ECTE0` represents the Orientation Error at initial state.
+- For the `ECTE` orientation error: `ECTE = ECTE0 + v0 * delta0 * dt / Lf`. Where `ECTE0` represents the Orientation Error at initial state.
 
 <sub>All variables suffixed with `0` represent variables from state at time `t`</sub>
 
