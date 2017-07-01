@@ -49,7 +49,9 @@ The values chosen are:
 * N = 10
 * dt = 0.1
 
-It is enough to have 10 steps to look into the future.
+Meaning that our prediction horizont will be of *1 second*.
+
+We will predict 10 timesteps into the future, each of those timesteps are 0.1 seconds appart from each other. We experimented with higher values of N ( 25 , 40 ) but the time to compute more states was bigger.
 
 ### Polynomial fitting
 
@@ -66,3 +68,5 @@ With this data we are able to compute the state of our vehicle in 100 ms.
 After that we proceed to compute the [optimized steering angle and throttle](https://github.com/vguerra/CarND-MPC-Project/blob/master/src/main.cpp#L124-L130).
 
 ### Output Video
+
+This is the resulting video of the vehicle driving one lap.
