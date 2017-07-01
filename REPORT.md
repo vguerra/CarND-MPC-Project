@@ -55,7 +55,7 @@ It is enough to have 10 steps to look into the future.
 
 First, the waypoints provided by the Simulator are [translated into the Vehicle's coordinate system](https://github.com/vguerra/CarND-MPC-Project/blob/master/src/main.cpp#L99-L105).
 
-After that, a [3rd order polynomial if fitted](https://github.com/vguerra/CarND-MPC-Project/blob/master/src/main.cpp#L112) to the transformed waypoints. In this case a polynomial with an order bigger than 2 is required to capture the roadh shape, anything less than that will not be of much help.
+After that, a [3rd order polynomial is fitted](https://github.com/vguerra/CarND-MPC-Project/blob/master/src/main.cpp#L112) to the transformed waypoints. In this case a polynomial with an order bigger than 2 is required to capture the roadh shape, anything less than that will not be of much help.
 
 ### Latency
 
