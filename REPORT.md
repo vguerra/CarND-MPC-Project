@@ -28,6 +28,10 @@ The project is organized as follows:
 
 ### Model
 
+The model that represents the dynamics of the vehicle includes the following parts:
+
+#### The State
+
 The state vector includes 6 variables:
 
 * `x`: Vehicle's position on x axis.
@@ -37,10 +41,20 @@ The state vector includes 6 variables:
 * `cte`: The cross track error.
 * `epsi`: The orientation error.
 
+#### The Actuators
+
 We have as well the actuators, that represent the control inputs:
 
-* `delta`: Vehicle's steering angle.
-* `a`: Vehicle's acceleration.
+* `delta`: Vehicle's steering angle. Taking values in range `[-25, 25]`.
+* `a`: Vehicle's acceleration ( which represents both the gas and brake pedal). Taking values in range `[-1, 1]`.
+
+#### The Update Equations
+
+If we say that at time `t` we have an initial state of the vehicle and the control inputs, we would like to know the state after a short period of time has passed ( we call this differential `dt`). The update equations helps us to define the next state of the vehicle at time `t + 1`.
+
+- For the `x<sup>t + 1</sup>` position of the car: `x = x0 + v0 * cos(psi0) * dt`.
+- For the `y` position of the car: `y = y0 + v0 * sin(psi0) * dt`.
+- For the `psi` steering angle: `psi = psi0 + v0 * delta0 * dt / Lf`. Where Lf represents the distance between front of the vehicle and it's center of gravity.
 
 ### Timestep length and Elapsed duration
 
